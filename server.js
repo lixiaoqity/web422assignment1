@@ -8,6 +8,7 @@
 * ********************************************************************************/
 const express = require("express");
 const cors = require("cors");
+//const path = require("path");
 const bodyParser = require("body-parser");
 const dataService = require("./modules/data-service.js");
 require('dotenv').config({path:"./config/keys.env"});
@@ -23,11 +24,18 @@ app.use(bodyParser.json());
 const HTTP_PORT = process.env.PORT || 8080;
 
 // ************* API Routes
-
+/* app.get("/", (req,res) => {
+    fetch(`http://localhost:8080/api/sales?page=1&perPage=10`)
+    .then(res => res.json())
+    .then(data =>{
+        let saleData = data;
+        console.log(saleData);
+    });
+}); */
 // POST /api/sales (NOTE: This route must read the contents of the request body)
 app.post("/api/sales",(req,res)=>{
     myData.addNewSale(req.body).then((msg)=>{
-        res.json({message: msg});
+        res.json(msg);
     }).catch((err)=>{
         res.json({message:`an adding sale error occurred: ${err}`})
     });
@@ -37,7 +45,7 @@ app.post("/api/sales",(req,res)=>{
 // GET /api/sales (NOTE: This route must accept the numeric query parameters "page" and "perPage", ie: /api/sales?page=1&perPage=5 )
 app.get("/api/sales/",(req,res)=>{
     myData.getAllSales(req.query.page,req.query.perPage).then((msg)=>{
-        res.json({message: msg});
+        res.json(msg);
     }).catch((err)=>{
         res.json({message:`an finding sales error occurred: ${err}`})
     });
@@ -47,7 +55,7 @@ app.get("/api/sales/",(req,res)=>{
 // GET /api/sales (NOTE: This route must accept a numeric route parameter, ie: /api/sales/5bd761dcae323e45a93ccfe8)
 app.get("/api/sales/:id",(req,res)=>{
     myData.getSaleById(req.params.id).then((msg)=>{
-        res.json({message: msg});
+        res.json(msg);
     }).catch((err)=>{
         res.json({message:`an finding sale error occurred: ${err}`})
     });
@@ -56,7 +64,7 @@ app.get("/api/sales/:id",(req,res)=>{
 // PUT /api/sales (NOTE: This route must accept a numeric route parameter, ie: /api/sales/5bd761dcae323e45a93ccfe8 as well as read the contents of the request body)
 app.put("/api/sales/:id",(req,res)=>{
     myData.updateSaleById(req.body,req.params.id).then((msg)=>{
-        res.json({message: msg});
+        res.json(msg);
     }).catch((err)=>{
         res.json({message:`an updating error occurred: ${err}`})
     });
@@ -65,7 +73,7 @@ app.put("/api/sales/:id",(req,res)=>{
 // DELETE /api/sales (NOTE: This route must accept a numeric route parameter, ie: /api/sales/5bd761dcae323e45a93ccfe8)
 app.delete("/api/sales/:id",(req,res)=>{
     myData.deleteSaleById(req.params.id).then((msg)=>{
-        res.json({message: msg});
+        res.json(msg);
     }).catch((err)=>{
         res.json({message:`an deleting error occurred: ${err}`});
     });
